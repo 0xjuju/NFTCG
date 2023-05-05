@@ -78,10 +78,9 @@ pub mod game_traits {
         // Move a card to a specific card zone. Top or bottom
         fn move_card<T: HasCards>(card: Card, zone: &mut T, location: TopOrBottom) {
             use TopOrBottom::*;
-
             match location {
                 Top => zone.get_cards().push(card),
-                Bottom => zone.get_cards().push(card),
+                Bottom => zone.get_cards().insert(0, card),
             }    
         }
     }

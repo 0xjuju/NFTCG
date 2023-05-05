@@ -212,11 +212,19 @@ pub mod game_structs {
         
         fn draw_card(&mut self, location: TopOrBottom) {
             let card = self.deck.cards.pop();
-            Self::move_card(card.unwrap(), &mut self.hand, location)
+
+            match card {
+                Some(card) => Self::move_card(card, &mut self.hand, location),
+                None => ()
+            }
         }
 
-        fn draw_cards(&mut self, num: u8, location: TopOrBottom) {
-            unimplemented!()
+        fn draw_cards(&mut self, mut num: u8, location: TopOrBottom) {
+            
+            while num > 0 {
+                self.draw_card(location);
+                num -= 1;
+            }
         }
 
         fn hand_size(&self) -> u8 {

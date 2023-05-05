@@ -34,7 +34,9 @@ pub mod game_enums {
 
     }
 
+
     // Location of card in game
+    #[derive(Copy, Clone)]
     pub enum Location {
         Deck,
         Field,
@@ -50,6 +52,7 @@ pub mod game_enums {
         GameStart(String),
     }
 
+    #[derive(Copy, Clone)]
     pub enum TopOrBottom {
         Top,
         Bottom
