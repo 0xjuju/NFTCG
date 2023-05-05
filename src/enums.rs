@@ -1,5 +1,11 @@
-pub mod GameEnums {
-    use crate::structs::GameStructs::*;
+pub mod game_enums {
+    use crate::structs::game_structs::*;
+
+
+    pub enum CoinFlip {
+        Heads,
+        Tails,
+    }
 
     pub enum CardType {
         Event(EventType),
@@ -34,7 +40,7 @@ pub mod GameEnums {
         Field,
         Discard,
         Hand,
-        Exiled,
+        Limbo,
     }
 
     // Different catchphrases for Avatar
@@ -43,9 +49,10 @@ pub mod GameEnums {
         Lose(String),
         GameStart(String),
     }
-    // type of reserve for Avatar
-    pub enum ReserveType {
-        Ammo(u16),
-        Magic(u8),
+
+    pub enum TopOrBottom {
+        Top,
+        Bottom
     }
+
 }
