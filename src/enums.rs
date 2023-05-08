@@ -68,4 +68,9 @@ pub mod game_enums {
         None
     }
 
+    pub enum Viewable {
+        YES,
+        NO
+    }
+
 }

@@ -196,8 +196,11 @@ pub mod game_structs {
     }
 
     impl HasCards for Hand {
+
         fn get_cards(&mut self) -> &mut Cards {
             &mut self.cards
+        
+              
         }
     }
 
@@ -236,7 +239,7 @@ pub mod game_structs {
         
         fn draw_card(&mut self, location: TopOrBottom) {
             let card = self.deck.cards.pop();
-            
+
             match card {
                 Some(card) => Self::move_card(card, &mut self.hand, location),
                 None => ()
