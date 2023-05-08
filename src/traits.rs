@@ -3,6 +3,7 @@
 pub mod game_traits {
     use rand;
     use rand::prelude::SliceRandom;
+
     use crate::enums::game_enums::*;
     use crate::state::state_vars::*;
     use crate::structs::game_structs::*;
@@ -45,15 +46,14 @@ pub mod game_traits {
 
     /// Define main rule for game
     pub trait GameRules {
-
-
-        fn end_game(&mut self) -> GameResult;
+        fn begin_game(&mut self);
+        fn end_game(&self, loser: Player, condition: VictoryCondition) -> GameResult;
         fn end_turn(&mut self);
         fn flip_coin() -> CoinFlip;
         fn new_game(player1: Player, player2: Player) -> Self;
         fn new_turn(&mut self);
         fn reset_action_counters(&mut self);
-         
+
         fn randomize_cards(cards: &mut Vec<Card>) {
             cards.shuffle(&mut rand::thread_rng())
         }
@@ -72,6 +72,7 @@ pub mod game_traits {
         fn draw_cards(&mut self, num: u8, location: TopOrBottom);
         fn hand_size(&self) -> u8;
         fn new_player(name: String, avatar: Avatar, deck: Deck) -> Self;
+        fn set_opponent(&mut self, opponent: Player);
         fn shuffle_deck(&mut self);
         fn shuffle_hand(&mut self);
 

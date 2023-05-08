@@ -3,6 +3,9 @@
 #[allow(unused_variables)]
 pub mod game_structs {
     use rand::Rng;
+    use std::cmp::{Eq, PartialEq};
+    use std::cell::RefCell;
+    use std::rc::Rc;
 
     use crate::enums::game_enums::*;
     use crate::traits::game_traits::*;
@@ -10,6 +13,7 @@ pub mod game_structs {
 
 
 
+    #[derive(Clone, Eq, PartialEq)]
     pub struct Action {
         counter: u8,
         max: u8,
@@ -25,6 +29,7 @@ pub mod game_structs {
     }
 
     // The Main Character for the game
+    #[derive(Clone, Eq, PartialEq)]
     pub struct Avatar {
         name: String,
         battlefields: Vec<String>,
@@ -49,11 +54,13 @@ pub mod game_structs {
         }
     }
 
+    #[derive(Clone)]
     pub struct Battlefield {
         field: String
     }
 
 
+    #[derive(Clone, Eq, PartialEq)]
     pub struct Card {
         name: String,
         card_type: CardType,  
@@ -72,6 +79,7 @@ pub mod game_structs {
         }
     }
 
+    #[derive(Clone, Eq, PartialEq)]
     pub struct Deck {
         cards: Vec<Card>,
         max_size: u8
@@ -87,6 +95,7 @@ pub mod game_structs {
         }
     }
 
+    #[derive(Clone, Eq, PartialEq)]
     pub struct Discard {
         cards: Vec<Card>
     }
@@ -99,8 +108,10 @@ pub mod game_structs {
         }
     }
 
+    #[derive(Clone)]
     pub struct Field {}
 
+    #[derive(Clone)]
     pub struct Game {
         pub field: Field,
         pub battlefield: Battlefield,
@@ -109,12 +120,22 @@ pub mod game_structs {
         pub turn: u8,
         pub winner: Option<Player>,
     }
-    
+
     impl GameRules for Game {
 
-
-        fn end_game(&mut self)  -> GameResult  {
+        fn begin_game(&mut self) {
             unimplemented!()
+        }
+
+        fn end_game(&self, loser: Player, condition: VictoryCondition)  -> GameResult  {
+            unimplemented!()
+            // match condition {
+            //     VictoryCondition::None => GameResult::Draw,
+            //     _ => match self.player1 == loser {
+            //         true => GameResult::Winner(&self.player2),
+            //         false => GameResult::Winner(&self.player1)
+            //    }
+            // }
         }
 
         fn end_turn(&mut self) {
@@ -169,6 +190,7 @@ pub mod game_structs {
     }
     
 
+    #[derive(Clone, Eq, PartialEq)]
     pub struct Hand {
         cards: Vec<Card>,
     }
@@ -192,8 +214,10 @@ pub mod game_structs {
         }
     }
 
+    #[derive(Clone)]
     pub struct Player {
         pub name: String,
+        pub opponent: Option<Rc<RefCell<Player>>>,
         pub avatar: Avatar,
         pub discard: Discard,
         pub deck: Deck,
@@ -212,13 +236,13 @@ pub mod game_structs {
         
         fn draw_card(&mut self, location: TopOrBottom) {
             let card = self.deck.cards.pop();
-
+            
             match card {
                 Some(card) => Self::move_card(card, &mut self.hand, location),
                 None => ()
             }
         }
-
+        
         fn draw_cards(&mut self, mut num: u8, location: TopOrBottom) {
             
             while num > 0 {
@@ -237,11 +261,16 @@ pub mod game_structs {
 
             Self {
                 name,
+                opponent: None,
                 avatar,
                 deck,
                 hand,
                 discard
             }
+        }
+
+        fn set_opponent(&mut self, opponent: Player) {
+            self.opponent = Some(Rc::new(RefCell::new(opponent)));
         }
 
         fn shuffle_deck(&mut self) {
@@ -254,6 +283,7 @@ pub mod game_structs {
 
     }
 
+    #[derive(Clone, Eq, PartialEq)]
     // Unique ability for Avatar. Activated once per game
     pub struct SpecialAbility {
         name: String,

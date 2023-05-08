@@ -7,6 +7,7 @@ pub mod game_enums {
         Tails,
     }
 
+    #[derive(Clone, Eq, PartialEq)]
     pub enum CardType {
         Event(EventType),
         Equipment(EquipmentType),
@@ -14,6 +15,7 @@ pub mod game_enums {
     }
 
     // Tyoe of equipment for CardType::Equipment
+    #[derive(Clone, Eq, PartialEq)]
     pub enum EquipmentType {
         Weapon,
         Shield,
@@ -22,19 +24,20 @@ pub mod game_enums {
         Item,
     }
 
+    #[derive(Clone, Eq, PartialEq)]
     // type for CardType::Event
     pub enum EventType {
         Instant,
         Normal
     }
 
-    pub enum GameResult {
-        Winner(Player),
+    pub enum GameResult<'a> {
+        Winner(&'a Player),
         Draw
 
     }
 
-
+    #[derive(Eq, PartialEq)]
     // Location of card in game
     #[derive(Copy, Clone)]
     pub enum Location {
@@ -45,6 +48,7 @@ pub mod game_enums {
         Limbo,
     }
 
+    #[derive(Clone, Eq, PartialEq)]
     // Different catchphrases for Avatar
     pub enum Phrase {
         Win(String),
@@ -56,6 +60,12 @@ pub mod game_enums {
     pub enum TopOrBottom {
         Top,
         Bottom
+    }
+
+    pub enum VictoryCondition {
+        AvatarDefeated,
+        Deckout,
+        None
     }
 
 }

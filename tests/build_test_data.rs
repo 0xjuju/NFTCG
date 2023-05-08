@@ -1,6 +1,7 @@
 
 
 pub mod build_data {
+    
     use NFTCG::enums::game_enums::*;
     use NFTCG::structs::game_structs::*;
     use NFTCG::traits::game_traits::*;
@@ -16,7 +17,7 @@ pub mod build_data {
                     CardType::Event(EventType::Normal),
                     "copy permanent".to_string(),
                 ),
-
+                
                 Card::new(
                     "See".to_string(),
                     CardType::Event(EventType::Normal),
@@ -94,20 +95,28 @@ pub mod build_data {
 
         );
 
-        let p1 = Player::new_player (
+        
+
+        let mut p1 = Player::new_player (
             "Player1".to_string(),
             avatar1,
             deck1,
         );
 
-        let p2 = Player::new_player (
+        let mut p2 = Player::new_player (
             "Player2".to_string(),
             avatar2,
             deck2,
         );
 
+        p1.set_opponent(p2.clone());
+        p2.set_opponent(p1.clone());
 
-        Game::new_game(p1, p2 )
+        let game = Game::new_game(p1, p2);
+
+        
+        game
+
     }
 }
 
