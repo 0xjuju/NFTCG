@@ -80,7 +80,7 @@ pub mod game_structs {
 
     #[derive(Clone, Eq, PartialEq)]
     pub struct Deck {
-        pub cards: Vec<Card>,
+        pub cards: Cards,
         pub max_size: u8
     }
 
@@ -96,7 +96,7 @@ pub mod game_structs {
 
     #[derive(Clone, Eq, PartialEq)]
     pub struct DiscardPile {
-        pub cards: Vec<Card>
+        pub cards: Cards
     }
 
     impl DiscardTrait for DiscardPile {
@@ -191,7 +191,7 @@ pub mod game_structs {
 
     #[derive(Clone, Eq, PartialEq)]
     pub struct Hand {
-        pub cards: Vec<Card>,
+        pub cards: Cards,
     }
 
 
@@ -203,7 +203,7 @@ pub mod game_structs {
             }
         }
 
-        fn reveal(&self) -> Vec<Card> {
+        fn reveal(&self) -> Cards {
             unimplemented!()
         }
     }
