@@ -30,7 +30,7 @@ pub mod game_traits {
                 fn card_count(&self) -> u8 {
                     self.cards.len() as u8
                 }
-                
+
                 fn card_selector(&mut self) -> Card {
                     unimplemented!()
                 }

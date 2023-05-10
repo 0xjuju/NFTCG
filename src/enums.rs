@@ -56,6 +56,13 @@ pub mod game_enums {
         GameStart(String),
     }
 
+    // used to choose which object to target fo ability
+    pub enum Target {
+        Oppoenet,
+        Avatar,
+        SELF
+    }
+
     #[derive(Copy, Clone)]
     pub enum TopOrBottom {
         Top,
@@ -67,7 +74,7 @@ pub mod game_enums {
         Deckout,
         None
     }
-
+    
     pub enum Viewable {
         YES,
         NO
