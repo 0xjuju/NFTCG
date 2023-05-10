@@ -95,8 +95,6 @@ pub mod build_data {
 
         );
 
-        
-
         let mut p1 = Player::new_player (
             "Player1".to_string(),
             avatar1,

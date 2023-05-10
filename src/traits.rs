@@ -8,9 +8,16 @@ pub mod game_traits {
     use crate::state::state_vars::*;
     use crate::structs::game_structs::*;
 
+    /// Any trait that implements is expected to be card zone with a field like `cards: Vec<Card>'
     pub trait HasCards {
+
+        // number of cards in held
         fn card_count(&self) -> u8;
+
+        // Search through cards and select specific card
         fn card_selector(&mut self) -> Card;
+
+        // Retun list of cards held by zone
         fn get_cards(&mut self) -> &mut Cards;
     }
 
@@ -18,16 +25,21 @@ pub mod game_traits {
     pub trait IsGame {}
     pub trait IsZone {}
 
+    /// Actions are owned by avatars and manages how many moves an Avatar can make on their turn
     pub trait ActionTrait {
         fn new(counter: u8, max: u8) -> Self;
     }
 
+    // Avatars are owned by Player types, and is the main actor for in-game actions like attacking, health etc.
     pub trait AvatarTrait {
         fn deploy();
         fn new(name: String, battlefields: Vec<String>, actions: Action, health: u8, power: u8, speed: u8, specials: Vec<SpecialAbility>, catchphrase: Phrase) -> Self;
     } 
     
+    // Battlefields are owned by Avatars. Used to decide the location of the game battlefield. Owner of Battlefield acts first each turn
     pub trait BattlefieldTrait {
+
+        // change battlefield to the first one owned by avatar
         fn change_battlefield(&mut self, avatar: Avatar);
 
         // matches owner to the current battlefield
@@ -46,7 +58,7 @@ pub mod game_traits {
         fn new() -> Self;
     }
 
-    /// Define main rule for game
+    /// Define the game's setup and ending conditions. Also manages the state of the game and turn transitions
     pub trait GameRules {
         fn begin_game(&mut self);
         fn end_game(&self, loser: Player, condition: VictoryCondition) -> GameResult;
@@ -89,6 +101,7 @@ pub mod game_traits {
         }
     }
 
+    // Special ability owned by Avatar.
     pub trait SpecialAbilityTrait {
         fn new(name: String, text: String) -> Self;
     }
