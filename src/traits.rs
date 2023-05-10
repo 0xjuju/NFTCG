@@ -9,6 +9,8 @@ pub mod game_traits {
     use crate::structs::game_structs::*;
 
     pub trait HasCards {
+        fn card_count(&self) -> u8;
+        fn card_selector(&mut self) -> Card;
         fn get_cards(&mut self) -> &mut Cards;
     }
 
@@ -67,14 +69,15 @@ pub mod game_traits {
 
     pub trait PlayerOptions {
         fn deck_size(&self) -> u8;
-        fn discard_card(player: Player);
         fn draw_card(&mut self, location: TopOrBottom);
         fn draw_cards(&mut self, num: u8, location: TopOrBottom);
         fn hand_size(&self) -> u8;
+        fn move_to_discard(&mut self, card: Card);
         fn new_player(name: String, avatar: Avatar, deck: Deck) -> Self;
         fn set_opponent(&mut self, opponent: Player);
         fn shuffle_deck(&mut self);
         fn shuffle_hand(&mut self);
+
 
         // Move a card to a specific card zone. Top or bottom
         fn move_card<T: HasCards>(card: Card, zone: &mut T, location: TopOrBottom) {

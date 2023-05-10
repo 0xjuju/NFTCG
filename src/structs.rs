@@ -108,6 +108,20 @@ pub mod game_structs {
         }
     }
 
+    impl HasCards for Discard {
+        fn card_count(&self) -> u8 {
+            self.cards.len() as u8
+        }
+
+        fn card_selector(&mut self) -> Card {
+            unimplemented!()
+        }
+
+        fn get_cards(&mut self) -> &mut Cards {
+            &mut self.cards
+        }
+    }
+
     #[derive(Clone)]
     pub struct Field {}
 
@@ -192,15 +206,20 @@ pub mod game_structs {
 
     #[derive(Clone, Eq, PartialEq)]
     pub struct Hand {
-        cards: Vec<Card>,
+        pub cards: Vec<Card>,
     }
 
     impl HasCards for Hand {
+        fn card_count(&self) -> u8 {
+            self.cards.len() as u8
+        }
+        
+        fn card_selector(&mut self) -> Card {
+            unimplemented!()
+        }
 
         fn get_cards(&mut self) -> &mut Cards {
             &mut self.cards
-        
-              
         }
     }
 
@@ -232,10 +251,6 @@ pub mod game_structs {
         fn deck_size(&self) -> u8 {
             self.deck.cards.len() as u8
         }
-
-        fn discard_card(player: Player) {
-            unimplemented!()
-        }
         
         fn draw_card(&mut self, location: TopOrBottom) {
             let card = self.deck.cards.pop();
@@ -256,6 +271,10 @@ pub mod game_structs {
 
         fn hand_size(&self) -> u8 {
             self.hand.cards.len() as u8
+        }
+
+        fn move_to_discard(&mut self, card: Card) {
+            Self::move_card(card, &mut self.discard, TopOrBottom::Top);
         }
 
         fn new_player(name: String, avatar: Avatar, deck: Deck) -> Self {

@@ -8,7 +8,7 @@ mod tests {
 
 
     #[test]
-    fn draw_cards_from_zones() {
+    fn draw_discard_cards_from_zones() {
         use TopOrBottom::*;
 
         let mut game = mach_game();
@@ -32,6 +32,12 @@ mod tests {
         game.player1.draw_cards(2, Top);
         assert_eq!(game.player1.hand_size(), 2);
         assert_eq!(game.player1.deck_size(), 1);
+
+        let mut p1 = game.player1;
+        assert_eq!(p1.discard.card_count(), 0);
+        let card = p1.hand.cards.pop().unwrap();
+        p1.move_to_discard(card);
+        assert_eq!(p1.discard.card_count(), 1);
 
     }
 
