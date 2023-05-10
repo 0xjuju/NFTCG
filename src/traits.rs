@@ -8,6 +8,7 @@ pub mod game_traits {
     use crate::state::state_vars::*;
     use crate::structs::game_structs::*;
 
+
     /// Any trait that implements is expected to be card zone with a field like `cards: Vec<Card>'
     pub trait HasCards {
 
@@ -20,6 +21,32 @@ pub mod game_traits {
         // Retun list of cards held by zone
         fn get_cards(&mut self) -> &mut Cards;
     }
+
+    // impl using macro since when can't make default implementations from trait directly
+    macro_rules! impl_has_cads_for_generics {
+        ( $( $t:ty ),+ $(,)? ) => ($(
+            impl HasCards for $t {
+
+                fn card_count(&self) -> u8 {
+                    self.cards.len() as u8
+                }
+        
+                fn card_selector(&mut self) -> Card {
+                    unimplemented!()
+                }
+        
+                fn get_cards(&mut self) -> &mut Cards {
+                    &mut self.cards
+                }
+            }
+        )+)
+    }
+
+    impl_has_cads_for_generics!(
+        DiscardPile,
+        Hand,
+        Deck
+    );
 
     pub trait IsAvatar {}
     pub trait IsGame {}

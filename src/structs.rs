@@ -12,7 +12,6 @@ pub mod game_structs {
     use crate::state::state_vars::*;
 
 
-
     #[derive(Clone, Eq, PartialEq)]
     pub struct Action {
         counter: u8,
@@ -81,8 +80,8 @@ pub mod game_structs {
 
     #[derive(Clone, Eq, PartialEq)]
     pub struct Deck {
-        cards: Vec<Card>,
-        max_size: u8
+        pub cards: Vec<Card>,
+        pub max_size: u8
     }
 
     impl DeckTrait for Deck {
@@ -97,7 +96,7 @@ pub mod game_structs {
 
     #[derive(Clone, Eq, PartialEq)]
     pub struct DiscardPile {
-        cards: Vec<Card>
+        pub cards: Vec<Card>
     }
 
     impl DiscardTrait for DiscardPile {
@@ -105,20 +104,6 @@ pub mod game_structs {
             Self {
                 cards: Vec::new()
             }
-        }
-    }
-
-    impl HasCards for DiscardPile {
-        fn card_count(&self) -> u8 {
-            self.cards.len() as u8
-        }
-
-        fn card_selector(&mut self) -> Card {
-            unimplemented!()
-        }
-
-        fn get_cards(&mut self) -> &mut Cards {
-            &mut self.cards
         }
     }
 
@@ -209,19 +194,6 @@ pub mod game_structs {
         pub cards: Vec<Card>,
     }
 
-    impl HasCards for Hand {
-        fn card_count(&self) -> u8 {
-            self.cards.len() as u8
-        }
-
-        fn card_selector(&mut self) -> Card {
-            unimplemented!()
-        }
-
-        fn get_cards(&mut self) -> &mut Cards {
-            &mut self.cards
-        }
-    }
 
     impl HandTrait for Hand {
 
