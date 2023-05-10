@@ -96,11 +96,11 @@ pub mod game_structs {
     }
 
     #[derive(Clone, Eq, PartialEq)]
-    pub struct Discard {
+    pub struct DiscardPile {
         cards: Vec<Card>
     }
 
-    impl DiscardTrait for Discard {
+    impl DiscardTrait for DiscardPile {
         fn new() -> Self {
             Self {
                 cards: Vec::new()
@@ -108,7 +108,7 @@ pub mod game_structs {
         }
     }
 
-    impl HasCards for Discard {
+    impl HasCards for DiscardPile {
         fn card_count(&self) -> u8 {
             self.cards.len() as u8
         }
@@ -213,7 +213,7 @@ pub mod game_structs {
         fn card_count(&self) -> u8 {
             self.cards.len() as u8
         }
-        
+
         fn card_selector(&mut self) -> Card {
             unimplemented!()
         }
@@ -241,7 +241,7 @@ pub mod game_structs {
         pub name: String,
         pub opponent: Option<Rc<RefCell<Player>>>,
         pub avatar: Avatar,
-        pub discard: Discard,
+        pub discard_pile: DiscardPile,
         pub deck: Deck,
         pub hand: Hand,
     }
@@ -274,12 +274,12 @@ pub mod game_structs {
         }
 
         fn move_to_discard(&mut self, card: Card) {
-            Self::move_card(card, &mut self.discard, TopOrBottom::Top);
+            Self::move_card(card, &mut self.discard_pile, TopOrBottom::Top);
         }
 
         fn new_player(name: String, avatar: Avatar, deck: Deck) -> Self {
             let hand = Hand::new();
-            let discard = Discard::new();
+            let discard_pile = DiscardPile::new();
 
             Self {
                 name,
@@ -287,7 +287,7 @@ pub mod game_structs {
                 avatar,
                 deck,
                 hand,
-                discard
+                discard_pile
             }
         }
 

@@ -34,10 +34,10 @@ mod tests {
         assert_eq!(game.player1.deck_size(), 1);
 
         let mut p1 = game.player1;
-        assert_eq!(p1.discard.card_count(), 0);
+        assert_eq!(p1.discard_pile.card_count(), 0);
         let card = p1.hand.cards.pop().unwrap();
         p1.move_to_discard(card);
-        assert_eq!(p1.discard.card_count(), 1);
+        assert_eq!(p1.discard_pile.card_count(), 1);
 
     }
 
