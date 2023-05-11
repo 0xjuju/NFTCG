@@ -24,7 +24,7 @@ pub mod game_traits {
         fn get_cards(&mut self) -> &mut Cards;
     }
 
-    // impl using macro since when can't make default implementations from trait directly
+    // impl using macro since when can't access self.cards from default implementations over T
     macro_rules! impl_has_cards_for_generics {
         ( $( $t:ty ),+ $(,)? ) => ($(
             impl HasCards for $t {
