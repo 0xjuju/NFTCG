@@ -115,8 +115,8 @@ pub mod game_structs {
     pub struct Game {
         pub field: Field,
         pub battlefield: Battlefield,
-        pub player1: Player,
-        pub player2: Player,
+        pub player1: Rc<RefCell<Player>>,
+        pub player2: Rc<RefCell<Player>>,
         pub turn: u8,
         pub winner: Option<Player>,
     }
@@ -154,13 +154,14 @@ pub mod game_structs {
         }
 
 
-        fn new_game(player1: Player, player2: Player) -> Self {
-
+        fn new_game(player1: Rc<RefCell<Player>>, player2: Rc<RefCell<Player>>) -> Self {
+            let p1_borrowed = player1.borrow();
+            let p2_borrowed = player2.borrow();
             // choose which player starts with the battlefield
             let coin_flip = Self::flip_coin();
             let battlefield_owner = match coin_flip {
-                CoinFlip::Heads => &player1.avatar,
-                CoinFlip::Tails => &player2.avatar
+                CoinFlip::Heads => &p1_borrowed.avatar,
+                CoinFlip::Tails => &p2_borrowed.avatar
             };
 
             let bf = &battlefield_owner.battlefields[0];
@@ -171,8 +172,8 @@ pub mod game_structs {
             Self {
                 field,
                 battlefield,
-                player1,
-                player2,
+                player1: player1.clone(),
+                player2: player2.clone(),
                 turn: 0,
                 winner: None
             }
@@ -226,20 +227,19 @@ pub mod game_structs {
         }
 
         fn discard_card_from_hand(&mut self, target: Target) {
-            let card: Card;
 
             match target {
                 Target::SELF => {
-                    card = self.hand.card_selector();
+                    let card = self.hand.card_selector();
+                    self.move_to_discard(card);
                 },
                 Target::Oppoenet => {
-                    let mut player = self.opponent.as_mut().unwrap().borrow_mut();
-                    card = player.hand.card_selector();
+                    let mut player = self.opponent.as_ref().unwrap().borrow_mut();
+                    let card = player.hand.card_selector();
+                    player.move_to_discard(card);
                 },
                 _ => panic!("Unexpected value")
             }
-
-            self.move_to_discard(card);
         }
         
         fn draw_card(&mut self, location: TopOrBottom) {
@@ -281,8 +281,8 @@ pub mod game_structs {
             }
         }
 
-        fn set_opponent(&mut self, opponent: Player) {
-            self.opponent = Some(Rc::new(RefCell::new(opponent)));
+        fn set_opponent(&mut self, opponent: Rc<RefCell<Player>>) {
+            self.opponent = Some(opponent);
         }
 
         fn shuffle_deck(&mut self) {

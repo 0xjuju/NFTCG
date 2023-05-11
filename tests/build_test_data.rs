@@ -1,6 +1,8 @@
 
 
 pub mod build_data {
+    use std::cell::RefCell;
+    use std::rc::Rc;
     
     use NFTCG::enums::game_enums::*;
     use NFTCG::structs::game_structs::*;
@@ -95,22 +97,30 @@ pub mod build_data {
 
         );
 
-        let mut p1 = Player::new_player (
-            "Player1".to_string(),
-            avatar1,
-            deck1,
+        let p1 = Rc::new(RefCell::new(
+            Player::new_player (
+                "Player1".to_string(),
+                avatar1,
+                deck1,
+            )
+        ));
+
+        let p2 = Rc::new(RefCell::new(
+            Player::new_player (
+                "Player2".to_string(),
+                avatar2,
+                deck2,
+            )
+        ));
+
+        p1.borrow_mut().set_opponent(p2.clone());
+        p2.borrow_mut().set_opponent(p1.clone());
+
+
+        let game = Game::new_game(
+            p1,
+            p2
         );
-
-        let mut p2 = Player::new_player (
-            "Player2".to_string(),
-            avatar2,
-            deck2,
-        );
-
-        p1.set_opponent(p2.clone());
-        p2.set_opponent(p1.clone());
-
-        let game = Game::new_game(p1, p2);
 
         
         game

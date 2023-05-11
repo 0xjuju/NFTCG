@@ -3,6 +3,8 @@
 pub mod game_traits {
     use rand;
     use rand::prelude::SliceRandom;
+    use std::cell::RefCell;
+    use std::rc::Rc;
 
     use crate::enums::game_enums::*;
     use crate::state::state_vars::*;
@@ -32,7 +34,9 @@ pub mod game_traits {
                 }
 
                 fn card_selector(&mut self) -> Card {
-                    unimplemented!()
+                    // unimplemented!();
+                    // Temporary value below
+                    self.cards.pop().unwrap()
                 }
         
                 fn get_cards(&mut self) -> &mut Cards {
@@ -91,7 +95,7 @@ pub mod game_traits {
         fn end_game(&self, loser: Player, condition: VictoryCondition) -> GameResult;
         fn end_turn(&mut self);
         fn flip_coin() -> CoinFlip;
-        fn new_game(player1: Player, player2: Player) -> Self;
+        fn new_game(player1: Rc<RefCell<Player>>, player2: Rc<RefCell<Player>>) -> Self;
         fn new_turn(&mut self);
         fn reset_action_counters(&mut self);
 
@@ -114,7 +118,7 @@ pub mod game_traits {
         fn hand_size(&self) -> u8;
         fn move_to_discard(&mut self, card: Card);
         fn new_player(name: String, avatar: Avatar, deck: Deck) -> Self;
-        fn set_opponent(&mut self, opponent: Player);
+        fn set_opponent(&mut self, opponent: Rc<RefCell<Player>>);
         fn shuffle_deck(&mut self);
         fn shuffle_hand(&mut self);
 
