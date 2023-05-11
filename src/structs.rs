@@ -2,6 +2,7 @@
 #[allow(dead_code)]
 #[allow(unused_variables)]
 pub mod game_structs {
+
     use rand::Rng;
     use std::cmp::{Eq, PartialEq};
     use std::cell::RefCell;
@@ -222,6 +223,23 @@ pub mod game_structs {
 
         fn deck_size(&self) -> u8 {
             self.deck.cards.len() as u8
+        }
+
+        fn discard_card_from_hand(&mut self, target: Target) {
+            let card: Card;
+
+            match target {
+                Target::SELF => {
+                    card = self.hand.card_selector();
+                },
+                Target::Oppoenet => {
+                    let mut player = self.opponent.as_mut().unwrap().borrow_mut();
+                    card = player.hand.card_selector();
+                },
+                _ => panic!("Unexpected value")
+            }
+
+            self.move_to_discard(card);
         }
         
         fn draw_card(&mut self, location: TopOrBottom) {

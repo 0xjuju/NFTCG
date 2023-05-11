@@ -23,7 +23,7 @@ pub mod game_traits {
     }
 
     // impl using macro since when can't make default implementations from trait directly
-    macro_rules! impl_has_cads_for_generics {
+    macro_rules! impl_has_cards_for_generics {
         ( $( $t:ty ),+ $(,)? ) => ($(
             impl HasCards for $t {
 
@@ -42,7 +42,7 @@ pub mod game_traits {
         )+)
     }
 
-    impl_has_cads_for_generics!(
+    impl_has_cards_for_generics!(
         DiscardPile,
         Hand,
         Deck
@@ -108,6 +108,7 @@ pub mod game_traits {
 
     pub trait PlayerOptions {
         fn deck_size(&self) -> u8;
+        fn discard_card_from_hand(&mut self, target: Target);
         fn draw_card(&mut self, location: TopOrBottom);
         fn draw_cards(&mut self, num: u8, location: TopOrBottom);
         fn hand_size(&self) -> u8;
